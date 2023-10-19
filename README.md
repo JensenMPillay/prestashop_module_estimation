@@ -1,5 +1,5 @@
 <center>
-    <img src="[/assets/module-logo.png](https://prestahero.com/img/cms/PS1.7_160x160_PNG.png)" alt="Module Logo" width="200">
+    <img src="https://prestahero.com/img/cms/PS1.7_160x160_PNG.png" alt="Module Logo" width="200">
 </center>
 </p>
 
