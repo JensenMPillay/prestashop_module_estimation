@@ -1,6 +1,6 @@
 # Module Prestashop - Gestion de Devis pour l'Installation de Types de Conduits
 
-![Module Logo](https://www.svgrepo.com/show/354207/prestashop.svg)
+![Module Logo](https://prestahero.com/img/cms/PS1.7_160x160_PNG.png)
 
 ## Description
 
