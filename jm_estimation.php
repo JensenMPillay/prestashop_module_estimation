@@ -146,7 +146,7 @@ class Jm_Estimation extends Module
 
     public function deleteTable()
     {
-        return Db::getInstance()->execute('DROP table ' . _DB_PREFIX_ . 'estimation');
+        return Db::getInstance()->execute("DROP TABLE IF EXISTS " . _DB_PREFIX_ . "estimation");
     }
 
 
