@@ -1,6 +1,5 @@
-<center>
+<p align="center">
     <img src="https://prestahero.com/img/cms/PS1.7_160x160_PNG.png" alt="Module Logo" width="200">
-</center>
 </p>
 
 # Module Prestashop - Gestion de Devis pour l'Installation de Types de Conduits
