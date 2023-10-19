@@ -1,0 +1,28 @@
+ 
+
+{shop_url}
+
+Bonjour {first_name} {last_name},
+
+Ceci est un récapitulatif de votre demande.
+
+Veuillez retrouver le récapitulatif ci-dessous.
+
+ID ----- {id_estimation}
+Duct Type ----- {duct_type}
+Stove Height ----- {stove_height}
+Stove Ceiling Height ----- {stove_ceiling_height}
+Parapet Height ----- {parapet_height}
+Installation Timeframe ----- {installation_timeframe}
+Heating Appliance ----- {heating_appliance}
+Smoke Outlet Diameter ----- {smoke_outlet_diameter}
+Additional Details ----- {additional_details}
+Last Name ----- {last_name}
+First Name ----- {first_name}
+Address ----- {address}
+Email ----- {email}
+Phone ----- {phone}
+
+[{shop_name}]({shop_url})
+
+Powered by [PrestaShop](https://www.prestashop.com/?utm_source=marchandprestashop&utm_medium=e-mail&utm_campaign=footer_1-7)
