@@ -174,7 +174,7 @@ class EstimationFormValidator
     {
         $errors = array();
 
-        if (empty($email) || !Validate::isEmail($email)) {
+        if (empty($email) || !Validate::isEmail($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors[] = $this->context->getTranslator()->trans('Le champ Email est invalide.', [], 'Admin.Notifications.Error');
         }
 

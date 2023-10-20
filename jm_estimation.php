@@ -44,7 +44,7 @@ class Jm_Estimation extends Module
     {
         if (
             !parent::uninstall() ||
-            !Configuration::deleteByName('KEY') ||
+            !Configuration::deleteByName('JM_RECEIVER_EMAIL') ||
             !$this->deleteTable() ||
             !$this->uninstallTab('AdminEstimation') ||
             !$this->deleteUploadedFiles()
@@ -70,9 +70,8 @@ class Jm_Estimation extends Module
             'input' => [
                 [
                     'type' => 'text',
-                    'label' => $this->l('Key Value'),
-                    'name' => 'KEY',
-                    'required' => true
+                    'label' => $this->l('Receiver Email Address'),
+                    'name' => 'JM_RECEIVER_EMAIL',
                 ],
             ],
             'submit' => [
@@ -87,7 +86,7 @@ class Jm_Estimation extends Module
         $helper->name_controller = $this->name;
         $helper->currentIndex = $this->context->link->getAdminLink('AdminModules', false) . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name;
         $helper->token = Tools::getAdminTokenLite('AdminModules');
-        $helper->fields_value['KEY'] = Configuration::get('KEY');
+        $helper->fields_value['JM_RECEIVER_EMAIL'] = Configuration::get('JM_RECEIVER_EMAIL');
         return $helper->generateForm($fieldsForm);
     }
 
@@ -96,23 +95,18 @@ class Jm_Estimation extends Module
 
         if (Tools::isSubmit('save')) {
 
-            $key = Tools::getValue('KEY');
+            $receiver_email = Tools::getValue('JM_RECEIVER_EMAIL');
             $errors = false;
 
-            if (empty($key)) {
-                $errors = true;
-                return $this->displayError('Key can\'t be empty.');
+            if ($receiver_email) {
+                if (!Validate::isEmail($receiver_email) || !filter_var($receiver_email, FILTER_VALIDATE_EMAIL)) {
+                    $errors = true;
+                    return $this->displayError($this->l('Please give a valid email address.'));
+                }
             }
-
-
-            if (!Validate::isString($key)) {
-                $errors = true;
-                return $this->displayError('Key type is not a string.');
-            }
-
             if ($errors == false) {
-                Configuration::updateValue('KEY', $key);
-                return $this->displayConfirmation('Key has been saved.');
+                Configuration::updateValue('JM_RECEIVER_EMAIL', $receiver_email);
+                return $this->displayConfirmation($this->l('Receiver Email Address has been updated.'));
             }
         }
     }
@@ -202,7 +196,7 @@ class Jm_Estimation extends Module
             if ($file != '.' && $file != '..') {
                 $filePath = $uploadsDir . $file;
 
-                if (is_file($filePath)) {
+                if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) != '.php') {
                     // Delete File 
                     unlink($filePath);
                 }

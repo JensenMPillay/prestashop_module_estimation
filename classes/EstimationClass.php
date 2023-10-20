@@ -455,7 +455,7 @@ class EstimationClass extends ObjectModel
             'estimation', // Email template file to be used
             $this->trans('Estimation Request Notification', [], 'Modules.JmEstimation.Admin'), // Email subject
             $templateVars, // Email content
-            Configuration::get('PS_SHOP_EMAIL'), // Receiver email address
+            Configuration::get('JM_RECEIVER_EMAIL')  ? Configuration::get('JM_RECEIVER_EMAIL') : Configuration::get('PS_SHOP_EMAIL'), // Receiver email address
             // "queenofspachess@protonmail.com", // Receiver email address
             Configuration::get('PS_SHOP_NAME'), // Receiver name
             Configuration::get('PS_SHOP_EMAIL'), // From email address
@@ -499,9 +499,9 @@ class EstimationClass extends ObjectModel
             'estimation', // Email template file to be used
             $this->trans('Estimation Request Notification', [], 'Modules.JmEstimation.Admin'), // Email subject
             $templateVars, // Email content
-            Configuration::get('PS_SHOP_EMAIL'), // Receiver email address
+            $this->getEmail(), // Receiver email address
             // "queenofspachess@protonmail.com", // Receiver email address
-            Configuration::get('PS_SHOP_NAME'), // Receiver name
+            $this->getLastName() . ' ' . $this->getFirstName(),  // Receiver name
             Configuration::get('PS_SHOP_EMAIL'), // From email address
             Configuration::get('PS_SHOP_NAME'), // From name
             $attachment, // File attachment

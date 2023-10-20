@@ -131,12 +131,13 @@ class Jm_EstimationEstimationModuleFrontController extends ModuleFrontController
         $currentDateTime = date('Y-m-d H:i:s');
         $estimation->setCreatedAt($currentDateTime);
 
-        if (!$estimation->saveByFormValues($values) || !$estimation->sendEstimationRequestConfirmation() || !$estimation->sendEstimationRequestNotification()) {
+        if (!$estimation->saveByFormValues($values) || !$estimation->sendEstimationRequestConfirmation()) {
             // Display Errors 
             $this->errors[] = $this->context->getTranslator()->trans('Votre demande n\'a pas pu être soumise. Veuillez contacter l\'administrateur.', [], 'Admin.Notifications.Error');
             $this->redirectWithNotifications($this->getCurrentURL());
         }
         // Display Success
+        $estimation->sendEstimationRequestNotification();
         $this->success[] = $this->context->getTranslator()->trans('Votre demande a été soumis avec succès.', [], 'Admin.Notifications.Success');
         $this->redirectWithNotifications($this->getCurrentURL());;
     }
