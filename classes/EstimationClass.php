@@ -94,7 +94,7 @@ class EstimationClass extends ObjectModel
      */
     public function setDuctType(string $duct_type): void
     {
-        $this->duct_type = $duct_type;
+        $this->duct_type = pSQL(trim($duct_type));
     }
 
     /**
@@ -110,7 +110,7 @@ class EstimationClass extends ObjectModel
      */
     public function setStoveHeight(string $stove_height): void
     {
-        $this->stove_height = intval($stove_height);
+        $this->stove_height = pSQL(trim(intval($stove_height)));
     }
 
     /**
@@ -126,7 +126,7 @@ class EstimationClass extends ObjectModel
      */
     public function setStoveCeilingHeight(string $stove_ceiling_height): void
     {
-        $this->stove_ceiling_height = intval($stove_ceiling_height);
+        $this->stove_ceiling_height = pSQL(trim(intval($stove_ceiling_height)));
     }
 
     /**
@@ -142,7 +142,7 @@ class EstimationClass extends ObjectModel
      */
     public function setCeilingThickness(string $ceiling_thickness): void
     {
-        $this->ceiling_thickness = intval($ceiling_thickness);
+        $this->ceiling_thickness = pSQL(trim(intval($ceiling_thickness)));
     }
 
     /**
@@ -158,7 +158,7 @@ class EstimationClass extends ObjectModel
      */
     public function setParapetHeight(string $parapet_height): void
     {
-        $this->parapet_height = intval($parapet_height);
+        $this->parapet_height = pSQL(trim(intval($parapet_height)));
     }
 
     /**
@@ -174,7 +174,7 @@ class EstimationClass extends ObjectModel
      */
     public function setInstallationTimeframe(string $installation_timeframe): void
     {
-        $this->installation_timeframe = $installation_timeframe;
+        $this->installation_timeframe = pSQL(trim($installation_timeframe));
     }
 
     /**
@@ -190,7 +190,7 @@ class EstimationClass extends ObjectModel
      */
     public function setHeatingAppliance(string $heating_appliance): void
     {
-        $this->heating_appliance = $heating_appliance;
+        $this->heating_appliance = pSQL(trim($heating_appliance));
     }
 
     /**
@@ -206,7 +206,7 @@ class EstimationClass extends ObjectModel
      */
     public function setSmokeOutletDiameter(string $smoke_outlet_diameter): void
     {
-        $this->smoke_outlet_diameter = intval($smoke_outlet_diameter);
+        $this->smoke_outlet_diameter = pSQL(trim(intval($smoke_outlet_diameter)));
     }
 
     /**
@@ -222,7 +222,7 @@ class EstimationClass extends ObjectModel
      */
     public function setAdditionalDetails(string $additional_details): void
     {
-        $this->additional_details = $additional_details;
+        $this->additional_details = pSQL(trim($additional_details));
     }
 
     /**
@@ -238,7 +238,7 @@ class EstimationClass extends ObjectModel
      */
     public function setDrawingFile(string $drawing_file): void
     {
-        $this->drawing_file = $drawing_file;
+        $this->drawing_file = pSQL(trim($drawing_file));
     }
 
     /**
@@ -254,7 +254,7 @@ class EstimationClass extends ObjectModel
      */
     public function setLastName(string $last_name): void
     {
-        $this->last_name = $last_name;
+        $this->last_name = pSQL(trim($last_name));
     }
 
     /**
@@ -270,7 +270,7 @@ class EstimationClass extends ObjectModel
      */
     public function setFirstName(string $first_name): void
     {
-        $this->first_name = $first_name;
+        $this->first_name = pSQL(trim($first_name));
     }
 
     /**
@@ -286,7 +286,7 @@ class EstimationClass extends ObjectModel
      */
     public function setAddress(string $address): void
     {
-        $this->address = $address;
+        $this->address = pSQL(trim($address));
     }
 
     /**
@@ -302,7 +302,7 @@ class EstimationClass extends ObjectModel
      */
     public function setEmail(string $email): void
     {
-        $this->email = $email;
+        $this->email = pSQL(trim($email));
     }
 
     /**
@@ -318,7 +318,7 @@ class EstimationClass extends ObjectModel
      */
     public function setPhone(string $phone): void
     {
-        $this->phone = $phone;
+        $this->phone = pSQL(trim($phone));
     }
 
     /**
@@ -334,7 +334,7 @@ class EstimationClass extends ObjectModel
      */
     public function setCreatedAt(string $date): void
     {
-        $this->created_at = $date;
+        $this->created_at = pSQL(trim($date));
     }
 
     /**
@@ -350,7 +350,7 @@ class EstimationClass extends ObjectModel
      */
     public function setUpdatedAt(string $date): void
     {
-        $this->updated_at = $date;
+        $this->updated_at = pSQL(trim($date));
     }
 
     /**
