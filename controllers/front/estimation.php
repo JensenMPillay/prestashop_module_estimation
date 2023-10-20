@@ -138,7 +138,7 @@ class Jm_EstimationEstimationModuleFrontController extends ModuleFrontController
         }
         // Display Success
         $estimation->sendEstimationRequestNotification();
-        $this->success[] = $this->context->getTranslator()->trans('Votre demande a été soumis avec succès.', [], 'Admin.Notifications.Success');
+        $this->success[] = $this->context->getTranslator()->trans('Votre demande a été soumise avec succès.', [], 'Admin.Notifications.Success');
         $this->redirectWithNotifications($this->getCurrentURL());;
     }
 
