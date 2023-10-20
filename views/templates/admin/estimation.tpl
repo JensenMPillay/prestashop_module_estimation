@@ -66,6 +66,18 @@
                                     <td>{$estimation->phone}</td>
                                 </tr>
                                 <tr>
+                                    <th>{l s='Sending' d='Modules.JmEstimation.Feature'}</th>
+                                    <td>{if $estimation->sending }SENT{else}NOT SENT{/if}</td>
+                                </tr>
+                                <tr>
+                                    <th>{l s='Created At' d='Modules.JmEstimation.Feature'}</th>
+                                    <td>{$estimation->created_at}</td>
+                                </tr>
+                                <tr>
+                                    <th>{l s='Updated At' d='Modules.JmEstimation.Feature'}</th>
+                                    <td>{$estimation->updated_at}</td>
+                                </tr>
+                                <tr>
                                     <th>{l s='Drawing File' d='Modules.JmEstimation.Feature'}</th>
                                     <td>
                                         <img class="img-thumbnail" src="{$imageLink}" alt="{$estimation->drawing_file}">

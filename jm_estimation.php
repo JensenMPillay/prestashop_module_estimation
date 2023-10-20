@@ -130,6 +130,7 @@ class Jm_Estimation extends Module
             `address` VARCHAR(255) NOT NULL,
             `email` VARCHAR(100) NOT NULL,
             `phone` VARCHAR(20) NOT NULL,
+            `sending` TINYINT(1) NOT NULL DEFAULT '0', 
             `created_at` DATETIME NOT NULL,
             `updated_at` DATETIME
         ) ENGINE=" . _MYSQL_ENGINE_ . " DEFAULT CHARSET=utf8";
@@ -196,7 +197,7 @@ class Jm_Estimation extends Module
             if ($file != '.' && $file != '..') {
                 $filePath = $uploadsDir . $file;
 
-                if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) != '.php') {
+                if (is_file($filePath) && pathinfo($file, PATHINFO_EXTENSION) != 'php') {
                     // Delete File 
                     unlink($filePath);
                 }

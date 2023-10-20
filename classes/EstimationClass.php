@@ -38,6 +38,7 @@ class EstimationClass extends ObjectModel
     public $address;
     public $email;
     public $phone;
+    public $sending;
     public $created_at;
     public $updated_at;
 
@@ -60,6 +61,7 @@ class EstimationClass extends ObjectModel
             'address' => array('type' => self::TYPE_STRING, 'size' => 255, 'required' => true),
             'email' => array('type' => self::TYPE_STRING, 'size' => 100, 'validate' => 'isEmail', 'required' => true),
             'phone' => array('type' => self::TYPE_STRING, 'size' => 20, 'required' => true),
+            'sending' => array('type' => self::TYPE_BOOL, 'validate' => 'isBool', 'default' => false),
             'created_at' => array('type' => self::TYPE_DATE, 'required' => false, 'validate' => 'isDate'),
             'updated_at' => array('type' => self::TYPE_DATE, 'required' => false, 'validate' => 'isDate'),
         ),
@@ -238,7 +240,7 @@ class EstimationClass extends ObjectModel
      */
     public function setDrawingFile(string $drawing_file): void
     {
-        $this->drawing_file = pSQL(trim($drawing_file));
+        $this->drawing_file = $drawing_file;
     }
 
     /**
@@ -322,6 +324,22 @@ class EstimationClass extends ObjectModel
     }
 
     /**
+     * @return bool|null
+     */
+    public function getSending(): ?bool
+    {
+        return $this->sending;
+    }
+
+    /**
+     * @param bool $bool
+     */
+    public function setSending($bool): void
+    {
+        $this->sending = $bool;
+    }
+
+    /**
      * @return string|null
      */
     public function getCreatedAt(): ?string
@@ -376,8 +394,7 @@ class EstimationClass extends ObjectModel
         return $this->save();
     }
 
-    // Send Estimation Mail 
-
+    // Send Estimation Request Mail Confirmation
     public function sendEstimationRequestConfirmation()
     {
         $filePath = $this->getDrawingFile();
@@ -422,6 +439,7 @@ class EstimationClass extends ObjectModel
         );
     }
 
+    // Send Estimation Request Mail Notification
     public function sendEstimationRequestNotification()
     {
         $filePath = $this->getDrawingFile();
@@ -466,6 +484,7 @@ class EstimationClass extends ObjectModel
         );
     }
 
+    // Send Estimation 
     public function sendEstimation()
     {
         $filePath = $this->getDrawingFile();
@@ -497,7 +516,7 @@ class EstimationClass extends ObjectModel
         return Mail::Send(
             (int)Context::getContext()->language->id, // Language ID
             'estimation', // Email template file to be used
-            $this->trans('Estimation Request Notification', [], 'Modules.JmEstimation.Admin'), // Email subject
+            $this->trans('Estimation', [], 'Modules.JmEstimation.Admin'), // Email subject
             $templateVars, // Email content
             $this->getEmail(), // Receiver email address
             // "queenofspachess@protonmail.com", // Receiver email address

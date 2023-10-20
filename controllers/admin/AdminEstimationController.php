@@ -12,15 +12,15 @@ class AdminEstimationController extends ModuleAdminController
         $this->className = 'estimationClass';
         $this->module = 'jm_estimation';
         $this->identifier = 'id_estimation';
-        $this->_orderBy = 'id_estimation';
+        $this->_orderBy = $this->identifier;
         $this->bootstrap = true;
 
         parent::__construct();
 
-        $this->bulk_actions = array('send' => array('text' => $this->trans('Send Estimation', [], 'Admin.Notifications.Error'), 'icon' => 'icon-pencil', 'confirm' => $this->trans('Are You Sure ? ', [], 'Admin.Notifications.Error')));
+        $this->bulk_actions = array('send' => array('text' => $this->trans('Send Estimation', [], 'Admin.Notifications.Error'), 'icon' => 'icon-send', 'confirm' => $this->trans('Are You Sure ? ', [], 'Admin.Notifications.Error')));
 
         $this->fields_list = array(
-            'id_estimation' => array(
+            $this->identifier => array(
                 'title' => 'ID',
                 'align' => 'center',
             ),
@@ -40,10 +40,6 @@ class AdminEstimationController extends ModuleAdminController
                 'title' => 'Last Name',
                 'align' => 'center',
             ),
-            'first_name' => array(
-                'title' => 'First Name',
-                'align' => 'center',
-            ),
             'address' => array(
                 'title' => 'Address',
                 'align' => 'center',
@@ -56,18 +52,29 @@ class AdminEstimationController extends ModuleAdminController
                 'title' => 'Phone',
                 'align' => 'center',
             ),
+            'sending' => array(
+                'title' => 'Sending',
+                'align' => 'center',
+                'type' => 'bool',
+            ),
             'created_at' => array(
                 'title' => 'Création',
                 'align' => 'center',
             ),
-            'updated_at' => array(
-                'title' => 'MAJ',
-                'align' => 'center',
-            ),
         );
+
+        $this->addRowAction('send');
         $this->addRowAction('view');
         $this->addRowAction('edit');
         $this->addRowAction('delete');
+    }
+
+    public function renderList()
+    {
+        if (Tools::getValue('send' . $this->table)) {
+            $this->processSend(Tools::getValue($this->identifier));
+        }
+        return parent::renderList();
     }
 
     public function renderView()
@@ -88,12 +95,12 @@ class AdminEstimationController extends ModuleAdminController
         ));
 
         // Display 
-        return $this->context->smarty->fetch(_PS_MODULE_DIR_ . $this->module->name . '/views/templates/admin/estimation.tpl');
+        return $this->context->smarty->fetch(parent::getTemplatePath() . 'estimation.tpl');
     }
 
     public function renderForm()
     {
-        $id_estimation = (int) Tools::getValue('id_estimation');
+        $id_estimation = (int) Tools::getValue($this->identifier);
         $estimation = new EstimationClass($id_estimation);
         $drawingFilePath = $estimation->getDrawingFile();
         // Form Skeleton 
@@ -105,7 +112,7 @@ class AdminEstimationController extends ModuleAdminController
             'input' => [
                 [
                     'type' => 'text',
-                    'name' => 'id_estimation',
+                    'name' => $this->identifier,
                     'label' => $this->trans('ID', [], 'Modules.JmEstimation.Admin'),
                     'required' => true,
                     'empty_message' => $this->trans('This input is required.', [], 'Admin.Notifications.Error'),
@@ -254,6 +261,25 @@ class AdminEstimationController extends ModuleAdminController
                     'required' => true,
                     'empty_message' => $this->trans('This input is required.', [], 'Admin.Notifications.Error'),
                 ],
+                [
+                    'type' => 'switch',
+                    'name' => 'sending',
+                    'required' => false,
+                    'is_bool' => true,
+                    'label' => $this->trans('Sending', [], 'Modules.JmEstimation.Admin'),
+                    'values' => array(
+                        array(
+                            'id' => 'sent',
+                            'value' => 1,
+                            'label' => $this->trans('Sent', [], 'Modules.JmEstimation.Admin'),
+                        ),
+                        array(
+                            'id' => 'not_sent',
+                            'value' => 0,
+                            'label' => $this->trans('Not Sent', [], 'Modules.JmEstimation.Admin'),
+                        ),
+                    ),
+                ],
 
             ],
             'submit' => [
@@ -278,6 +304,9 @@ class AdminEstimationController extends ModuleAdminController
         if ($operation === "updat") {
             $estimation->setUpdatedAt($currentDateTime);
         }
+
+        // Sending Behavior 
+        $estimation->setSending(Tools::getValue('sending'));
 
         if (!$estimation->saveByFormValues($values)) {
             // Display Errors 
@@ -323,7 +352,7 @@ class AdminEstimationController extends ModuleAdminController
 
     public function processUpdate()
     {
-        $id_estimation = Tools::getValue('id_estimation');
+        $id_estimation = Tools::getValue($this->identifier);
         $estimation = new EstimationClass($id_estimation);
         if (Validate::isLoadedObject($estimation)) {
             // Get Form Values
@@ -357,7 +386,7 @@ class AdminEstimationController extends ModuleAdminController
 
     public function processDelete()
     {
-        $id_estimation = (int) Tools::getValue('id_estimation');
+        $id_estimation = (int) Tools::getValue($this->identifier);
         $estimation = new EstimationClass($id_estimation);
 
         if (Validate::isLoadedObject($estimation)) {
@@ -372,22 +401,44 @@ class AdminEstimationController extends ModuleAdminController
         }
     }
 
+    public function displaySendLink($token = null, $id, $name = null)
+    {
+        $this->context->smarty->assign(array(
+            'href' => AdminController::$currentIndex . '&' . $this->identifier . '=' . $id . '&send' . $this->table . '=true&token=' . ($token != null ? $token : $this->token),
+            'action' => 'send',
+        ));
 
-    protected function processBulkSend()
+        // Display 
+        return $this->context->smarty->fetch(parent::getTemplatePath() . 'list_action_send.tpl');
+    }
+
+    public function processSend($id_estimation)
+    {
+        // Get Estimation 
+        $estimation = new EstimationClass($id_estimation);
+        // Send Estimation 
+        if (Validate::isLoadedObject($estimation) && $estimation->sendEstimation()) {
+            $estimation->setSending(true);
+            $estimation->save();
+            return $this->confirmations[] = $this->trans('Estimation has been sent successfully.', [], 'Admin.Notifications.Success');
+        } else {
+            $this->errors[] = $this->trans('An error occurred while sending the estimation.', [], 'Admin.Notifications.Error');
+            return false;
+        }
+    }
+
+    public function processBulkSend()
     {
         if (is_array($this->boxes) && !empty($this->boxes)) {
             // Count Emails Sent 
-            $successCount = 0;
+            $count = 0;
             foreach ($this->boxes as $id_estimation) {
-                // Get Estimation 
-                $estimation = new EstimationClass($id_estimation);
-                // Send Estimation 
-                if ($estimation->sendEstimation()) {
-                    $successCount++;
+                if ($this->processSend($id_estimation)) {
+                    $count++;
                 }
             }
-            if ($successCount === count($this->boxes)) {
-                $this->confirmations[] = $this->trans('Estimations have been sent successfully.', [], 'Admin.Notifications.Success');
+            if ($count === count($this->boxes)) {
+                $this->confirmations = array($this->trans('Estimations have been sent successfully.', [], 'Admin.Notifications.Success'));
             } else {
                 $this->errors[] = $this->trans('An error occurred while sending some of the estimations.', [], 'Admin.Notifications.Error');
             }
