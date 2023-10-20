@@ -447,7 +447,7 @@ class EstimationClass extends ObjectModel
             $attachment = array(
                 'content' => file_get_contents($filePath),
                 'name' => basename($filePath),
-                'mime' => 'image/png',
+                'mime' => mime_content_type($filePath),
             );
         } else {
             $attachment = NULL;
