@@ -1,0 +1,5 @@
+# Ignore all index.php files
+**/index.php
+
+# Ignore everything in the uploads directory
+modules/jm_estimation/uploads/*
